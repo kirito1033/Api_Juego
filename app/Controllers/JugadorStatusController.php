@@ -51,6 +51,38 @@ class JugadorStatusController extends ResourceController
       
     }
 
+    public function update($id = null)
+    {
+        $jugadorstatusModel = new JugadorStatusModel();
+       
+        try {
+            $json = $this->request->getJSON(true); 
+        } catch (\Exception $e) {
+            return $this->fail("Invalid JSON input: " . $e->getMessage(), 400);
+        }
+
+     
+        if (!$json || !isset($json['Jugador_status_id'])) {
+            return $this->fail("Jugador_status_id is required", 400);
+        }
+
+        $existing = $jugadorstatusModel->find($json['Jugador_status_id']);
+        if (!$existing) {
+            return $this->failNotFound("Jugador_status type not found");
+        }
+
+        $data = [
+            'Jugador_status_name' => $json['Jugador_status_name'] ?? $existing['Jugador_status_name'],
+            'Jugador_status_description' => $json['Jugador_status_description'] ?? $existing['Jugador_status_description'],
+            'update_at' => date('Y-m-d H:i:s')
+        ];
+
+        
+        $jugadorstatusModel->update($json['Jugador_status_id'], $data);
+
+        return $this->respondUpdated(['message' => 'Updated successfully']);
+    }
+
     
 
     public function delete($id = null)
@@ -63,12 +95,12 @@ class JugadorStatusController extends ResourceController
     
         $existing = $jugadorstatusModel->find($id);
         if (!$existing) {
-            return $this->failNotFound("Race type not found");
+            return $this->failNotFound("Jugador_Status type not found");
         }
     
         $jugadorstatusModel->delete($id);
     
-        return $this->respondDeleted(['message' => 'Raza eliminado correctamente']);
+        return $this->respondDeleted(['message' => 'Jugador_Status eliminado correctamente']);
     }
  
 }

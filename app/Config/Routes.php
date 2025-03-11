@@ -31,7 +31,7 @@ $routes->group("api", function ($routes){
     $routes->get("jugador-status", "JugadorStatusController::index");
 
     $routes->put('warrior-type/update', 'WarriorTypeController::update');
-
+    $routes->put('jugador-status/update', 'JugadorStatusController::update');
 
     $routes->delete('warrior-type/(:num)', 'WarriorTypeController::delete/$1', ['filter' => 'authFilter']);
     $routes->delete('races/(:num)', 'RaceController::delete/$1', ['filter' => 'authFilter']);
@@ -40,6 +40,6 @@ $routes->group("api", function ($routes){
     $routes->delete('warrior/(:num)', 'WarriorController::delete/$1', ['filter' => 'authFilter']);
     $routes->delete('warrior-power/(:num)', 'WarriorPowerController::delete/$1', ['filter' => 'authFilter']);
     $routes->delete('warrior-spells/(:num)', 'WarriorSpellsController::delete/$1', ['filter' => 'authFilter']);
-
+    $routes->delete("jugador-status/(:num)", "JugadorStatusController::delete/$1");
 });
 
