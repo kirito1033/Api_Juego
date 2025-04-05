@@ -51,6 +51,22 @@ class RolController extends ResourceController
       
     }
 
+    public function getId($id = null)
+    {
+        if (!$id) {
+            return $this->fail("Roles_id is required", 400);
+        }
+
+        $roleModel = new RoleModel();
+        
+        $roleModel = $roleModel->find($id);
+        if (!$roleModel) {
+            return $this->failNotFound("Roles_id not found");
+        }
+
+        return $this->respond($roleModel);
+    }
+
     public function update($id = null)
     {
         $roleModel = new RoleModel();

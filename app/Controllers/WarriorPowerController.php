@@ -43,6 +43,53 @@ class WarriorPowerController extends ResourceController
         $warriorPowerModel->insert($data);
         return $this->respondCreated(['message' => 'Warrior power assigned successfully']);
     }
+
+    public function getId($id = null)
+    {
+        if (!$id) {
+            return $this->fail("id is required", 400);
+        }
+
+        $warriorPowerModel = new WarriorPowerModel();
+        
+        $warriorPowerModel = $warriorPowerModel->find($id);
+        if (!$warriorPowerModel) {
+            return $this->failNotFound("id not found");
+        }
+
+        return $this->respond($warriorPowerModel);
+    }
+
+    public function update($id = null)
+    {
+        $warriorPowerModel = new WarriorPowerModel();
+       
+        try {
+            $json = $this->request->getJSON(true); 
+        } catch (\Exception $e) {
+            return $this->fail("Invalid JSON input: " . $e->getMessage(), 400);
+        }
+
+     
+        if (!$json || !isset($json['id'])) {
+            return $this->fail("id is required", 400);
+        }
+
+        $existing = $warriorPowerModel->find($json['id']);
+
+        $data = [
+            'id' => $json['id'] ?? $existing['id'],
+            'warrior_id' => $json['warrior_id'] ?? $existing['warrior_id'],
+            'power_id' => $json['power_id'] ?? $existing['power_id'],
+            
+            'update_at' => date('Y-m-d H:i:s')
+        ];
+
+        
+        $warriorPowerModel->update($json['id'], $data);
+
+        return $this->respondUpdated(['message' => 'Updated successfully']);
+    }
     public function delete($id = null)
     {
         if (!$id) {

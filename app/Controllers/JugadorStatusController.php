@@ -83,6 +83,22 @@ class JugadorStatusController extends ResourceController
         return $this->respondUpdated(['message' => 'Updated successfully']);
     }
 
+    public function getId($id = null)
+    {
+        if (!$id) {
+            return $this->fail("Jugador_status_id is required", 400);
+        }
+
+        $jugadorstatusModel = new JugadorStatusModel();
+        
+        $jugadorstatusModel = $jugadorstatusModel->find($id);
+        if (!$jugadorstatusModel) {
+            return $this->failNotFound("Jugador not found");
+        }
+
+        return $this->respond($jugadorstatusModel);
+    }
+
     
 
     public function delete($id = null)

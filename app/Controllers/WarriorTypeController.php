@@ -47,6 +47,23 @@ class WarriorTypeController extends ResourceController
       
     }
 
+    public function getId($id = null)
+    {
+        if (!$id) {
+            return $this->fail("type_id is required", 400);
+        }
+
+        $warriorTypeModel = new WarriorTypeModel();
+        
+        $warriorTypeModel = $warriorTypeModel->find($id);
+        if (!$warriorTypeModel) {
+            return $this->failNotFound("type_id not found");
+        }
+
+        return $this->respond($warriorTypeModel);
+    }
+
+
     public function update($id = null)
     {
         $warriorTypeModel = new WarriorTypeModel();

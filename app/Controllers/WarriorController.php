@@ -79,6 +79,61 @@ class WarriorController extends ResourceController
         return $this->respondCreated(['message' => 'Warrior registered successfully']);
     }
 
+    public function getId($id = null)
+    {
+        if (!$id) {
+            return $this->fail("Warrior_id is required", 400);
+        }
+
+        $warriorModel = new WarriorModel();
+        
+        $warriorModel = $warriorModel->find($id);
+        if (!$warriorModel) {
+            return $this->failNotFound("Warrior not found");
+        }
+
+        return $this->respond($warriorModel);
+    }
+
+    public function update($id = null)
+    {
+        $warriorModel = new WarriorModel();
+       
+        try {
+            $json = $this->request->getJSON(true); 
+        } catch (\Exception $e) {
+            return $this->fail("Invalid JSON input: " . $e->getMessage(), 400);
+        }
+
+     
+        if (!$json || !isset($json['Warrior_id'])) {
+            return $this->fail("Warrior_id is required", 400);
+        }
+
+        $existing = $warriorModel->find($json['Warrior_id']);
+        if (!$existing) {
+            return $this->failNotFound("warrior type not found");
+        }
+
+        $data = [
+            'name' => $json['name'] ?? $existing['name'],
+            'total_power' => $json['total_power'] ?? $existing['total_power'],
+            'total_magic' => $json['total_magic'] ?? $existing['total_magic'],
+            'health' => $json['health'] ?? $existing['health'],
+            'speed' => $json['speed'] ?? $existing['speed'],
+            'intelligence' => $json['intelligence'] ?? $existing['intelligence'],
+            'status' => $json['status'] ?? $existing['status'],
+            'type_id' => $json['type_id'] ?? $existing['type_id'],
+            'race_id' => $json['race_id'] ?? $existing['race_id'],
+            'update_at' => date('Y-m-d H:i:s')
+        ];
+
+        
+        $warriorModel->update($json['Warrior_id'], $data);
+
+        return $this->respondUpdated(['message' => 'Updated successfully']);
+    }
+
 
     public function delete($id = null)
     {

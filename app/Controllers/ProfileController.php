@@ -53,6 +53,22 @@ class ProfileController extends ResourceController
       
     }
 
+    public function getId($id = null)
+    {
+        if (!$id) {
+            return $this->fail("profile_id is required", 400);
+        }
+
+        $profileModel = new ProfileModel();
+        
+        $profileModel = $profileModel->find($id);
+        if (!$profileModel) {
+            return $this->failNotFound("profile_id not found");
+        }
+
+        return $this->respond($profileModel);
+    }
+
     public function update($id = null)
     {
         $profileModel = new ProfileModel();
@@ -92,19 +108,19 @@ class ProfileController extends ResourceController
     public function delete($id = null)
     {
         if (!$id) {
-            return $this->fail("profiles is required", 400);
+            return $this->fail("profile_id is required", 400);
         }
     
         $profileModel = new ProfileModel();
     
         $existing = $profileModel->find($id);
         if (!$existing) {
-            return $this->failNotFound("profiles type not found");
+            return $this->failNotFound("profile type not found");
         }
     
         $profileModel->delete($id);
     
-        return $this->respondDeleted(['message' => 'profiles eliminado correctamente']);
+        return $this->respondDeleted(['message' => 'profile eliminado correctamente']);
     }
  
 }

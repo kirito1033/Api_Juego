@@ -37,13 +37,33 @@ $routes->group("api", function ($routes){
     $routes->get("jugador", "JugadoresController::index");
     $routes->get("profile", "ProfileController::index");
 
+    $routes->get("jugador/(:num)", "JugadoresController::getId/$1");
+    $routes->get("jugador-status/(:num)", "JugadorStatusController::getId/$1");
+    $routes->get("powers/(:num)", "PowerController::getId/$1");
+    $routes->get("profile/(:num)", "ProfileController::getId/$1");
+    $routes->get('races/(:num)', 'RaceController::getId/$1');  
+    $routes->get("Role/(:num)", "RolController::getId/$1");
+    $routes->get('spells/(:num)', 'SpellsController::getId/$1'); 
+    $routes->get('warrior/(:num)', 'WarriorController::getId/$1'); 
+    $routes->get('warrior-power/(:num)', 'WarriorPowerController::getId/$1');
+    $routes->get('warrior-spells/(:num)', 'WarriorSpellsController::getId/$1');
+    $routes->get('warrior-types/(:num)', 'WarriorTypeController::getId/$1');
+
 
     $routes->put('warrior-type/update', 'WarriorTypeController::update');
     $routes->put('jugador-status/update', 'JugadorStatusController::update');
     $routes->put('Role/update', 'RolController::update');
     $routes->put('jugador/update', 'JugadoresController::update');
     $routes->put('profile/update', 'ProfileController::update');
-
+    $routes->put('powers/update', 'PowerController::update');
+    $routes->put('spells/update', 'SpellsController::update');
+    $routes->put('warrior/update', 'WarriorController::update');
+    $routes->put('powers/update', 'PowerController::update'); 
+    $routes->put('spells/update', 'SpellsController::update'); 
+    $routes->put('races/update', 'RaceController::update');
+    $routes->put('warrior-power/update', 'WarriorPowerController::update'); 
+    $routes->put('warrior-spells/update', 'WarriorSpellsController::update');
+    
 
     $routes->delete('warrior-type/(:num)', 'WarriorTypeController::delete/$1', ['filter' => 'authFilter']);
     $routes->delete('races/(:num)', 'RaceController::delete/$1', ['filter' => 'authFilter']);

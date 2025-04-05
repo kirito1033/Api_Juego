@@ -44,6 +44,52 @@ class WarriorSpellsController extends ResourceController
         return $this->respondCreated(['message' => 'Spell assigned to warrior successfully']);
     }
 
+    public function getId($id = null)
+    {
+        if (!$id) {
+            return $this->fail("id is required", 400);
+        }
+
+        $warriorSpellsModel = new WarriorSpellsModel();
+        
+        $warriorSpellsModel = $warriorSpellsModel->find($id);
+        if (!$warriorSpellsModel) {
+            return $this->failNotFound("id not found");
+        }
+
+        return $this->respond($warriorSpellsModel);
+    }
+
+    public function update($id = null)
+    {
+        $warriorSpellsModel = new WarriorSpellsModel();
+       
+        try {
+            $json = $this->request->getJSON(true); 
+        } catch (\Exception $e) {
+            return $this->fail("Invalid JSON input: " . $e->getMessage(), 400);
+        }
+
+     
+        if (!$json || !isset($json['id'])) {
+            return $this->fail("id is required", 400);
+        }
+
+        $existing = $warriorSpellsModel->find($json['id']);
+
+        $data = [
+            'id' => $json['id'] ?? $existing['id'],
+            'warrior_id' => $json['warrior_id'] ?? $existing['warrior_id'],
+            'spell_id' => $json['spell_id'] ?? $existing['spell_id'],
+            
+            'update_at' => date('Y-m-d H:i:s')
+        ];
+
+        
+        $warriorSpellsModel->update($json['id'], $data);
+
+        return $this->respondUpdated(['message' => 'Updated successfully']);
+    }
 
     public function delete($id = null)
     {

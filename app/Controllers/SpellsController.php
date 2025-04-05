@@ -53,6 +53,57 @@ class SpellsController extends ResourceController
       
     }
 
+    public function getId($id = null)
+    {
+        if (!$id) {
+            return $this->fail("spell is required", 400);
+        }
+
+        $spellsModel = new SpellsModel();
+        
+        $spellsModel = $spellsModel->find($id);
+        if (!$spellsModel) {
+            return $this->failNotFound("spell not found");
+        }
+
+        return $this->respond($spellsModel);
+    }
+
+    public function update($id = null)
+    {
+        $spellsModel = new SpellsModel();
+       
+        try {
+            $json = $this->request->getJSON(true); 
+        } catch (\Exception $e) {
+            return $this->fail("Invalid JSON input: " . $e->getMessage(), 400);
+        }
+
+     
+        if (!$json || !isset($json['spell_id'])) {
+            return $this->fail("spell_id is required", 400);
+        }
+
+        $existing = $spellsModel->find($json['spell_id']);
+        if (!$existing) {
+            return $this->failNotFound("spell type not found");
+        }
+
+        $data = [
+            'name' => $json['name'] ?? $existing['name'],
+            'description' => $json['description'] ?? $existing['description'],
+            'percentage' => $json['percentage'] ?? $existing['percentage'],
+            'update_at' => date('Y-m-d H:i:s')
+        ];
+
+        
+        $spellsModel->update($json['spell_id'], $data);
+
+        return $this->respondUpdated(['message' => 'Updated successfully']);
+    }
+
+
+
     public function delete($id = null)
     {
         if (!$id) {

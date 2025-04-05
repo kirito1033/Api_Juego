@@ -47,6 +47,22 @@ class RaceController extends ResourceController
       
     }
 
+    public function getId($id = null)
+    {
+        if (!$id) {
+            return $this->fail("race_id is required", 400);
+        }
+
+        $raceModel = new RaceModel();
+        
+        $raceModel = $raceModel->find($id);
+        if (!$raceModel) {
+            return $this->failNotFound("race_id not found");
+        }
+
+        return $this->respond($raceModel);
+    }
+
     public function update($id = null)
     {
         $raceModel = new RaceModel();
@@ -62,7 +78,7 @@ class RaceController extends ResourceController
             return $this->fail("race_id is required", 400);
         }
 
-        $existing = $warriorTypeModel->find($json['race_id']);
+        $existing = $raceModel->find($json['race_id']);
         if (!$existing) {
             return $this->failNotFound("Race not found");
         }
@@ -73,7 +89,7 @@ class RaceController extends ResourceController
         ];
 
         
-        $warriorTypeModel->update($json['race_id'], $data);
+        $raceModel->update($json['race_id'], $data);
 
         return $this->respondUpdated(['message' => 'Updated successfully']);
     }

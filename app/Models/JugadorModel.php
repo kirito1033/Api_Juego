@@ -15,10 +15,10 @@ class JugadorModel extends Model
     protected $allowedFields    = ['jugador_name', 'jugador_password', 'roles_fk', 'jugador_status_fk', 'update_at'];
 
     protected bool $allowEmptyInserts = false;
-
-  
+    
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
 
-
+    
 }
+

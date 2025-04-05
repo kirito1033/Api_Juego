@@ -58,6 +58,24 @@ class JugadoresController extends ResourceController
       
     }
 
+    public function getId($id = null)
+    {
+        if (!$id) {
+            return $this->fail("jugador_id is required", 400);
+        }
+
+        $jugadorModel = new JugadorModel();
+        
+        $jugador = $jugadorModel->find($id);
+        if (!$jugador) {
+            return $this->failNotFound("Jugador not found");
+        }
+
+        return $this->respond($jugador);
+    }
+
+
+
     public function update($id = null)
     {
         $jugadorModel = new JugadorModel();

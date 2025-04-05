@@ -15,8 +15,8 @@ class ProfileModel extends Model
     protected $allowedFields    = ['profile_email','profile_name','profile_photo','jugador_id_fk', 'update_at'];
 
     protected bool $allowEmptyInserts = false;
- 
+    
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
-
 }
+

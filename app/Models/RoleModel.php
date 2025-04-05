@@ -15,10 +15,9 @@ class RoleModel extends Model
     protected $allowedFields    = ['Roles_name', 'Roles_description' , 'update_at'];
 
     protected bool $allowEmptyInserts = false;
-
-  
+    
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
+    
 
-   
 }
